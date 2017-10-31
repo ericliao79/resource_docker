@@ -1,9 +1,10 @@
-FROM docker:17.10.0-ce-git
+FROM docker:17.10.0-ce
 
 MAINTAINER Eric <ericliao@4gamers.com.tw>
 
-RUN python get-pip.py --user
+ENV AWS_CLI_VERSION 1.11.131
 
-RUN pip install awscli --upgrade --user && \
-    cat "export PATH=~/.local/bin:$PATH" > ~/.bash_profile && \
-    source ~/.bash_profile
+RUN apk --no-cache update && \
+    apk --no-cache add python py-pip py-setuptools ca-certificates groff less && \
+    pip --no-cache-dir install awscli==${AWS_CLI_VERSION} && \
+    rm -rf /var/cache/apk/*
